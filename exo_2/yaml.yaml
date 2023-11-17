@@ -1,0 +1,8 @@
+# List of short url that redirect to long url
+urls:
+  - short: "google"
+    long: "https://www.google.com"
+  - short: "/dogs"
+    long: "https://www.google.com/search?q=dogs"
+  - short: "/cats"
+    long: "https://www.google.com/search?q=cats"
