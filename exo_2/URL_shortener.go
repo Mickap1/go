@@ -44,7 +44,9 @@ func buildMap(urls UrlsWrapper) map[string]string {
 	pathMap := make(map[string]string)
 	for key, value := range urls.Urls {
 		pathMap[value.Short] = value.Long
-		// fmt.Println(key, value)
+		if key == -1 {
+			break
+		}
 	}
 	return pathMap
 }
