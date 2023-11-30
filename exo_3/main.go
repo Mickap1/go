@@ -3,15 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"os"
 )
-
-// bool, for JSON booleans
-// float64, for JSON numbers
-// string, for JSON strings
-// []interface{}, for JSON arrays
-// map[string]interface{}, for JSON objects
-// nil for JSON null
 
 type StorySection struct {
 	Array []string `json:"story"`
@@ -29,16 +23,37 @@ type Story struct {
 }
 
 type StoryWrapper struct {
-	Story Story `json:"intro"`
+	Story Story `json:"-"`
 }
 
-func parseJSON(jsonData []byte) (StoryWrapper, error) {
-	var story StoryWrapper
-	err := json.Unmarshal(jsonData, &story)
+func parseJSON(jsonData []byte, key string) (Story, error) {
+	var storyMap map[string]Story
+	err := json.Unmarshal(jsonData, &storyMap)
 	if err != nil {
-		return StoryWrapper{}, err
+		return Story{}, err
 	}
+
+	story, ok := storyMap[key]
+	if !ok {
+		return Story{}, fmt.Errorf("Key '%s' not found in JSON", key)
+	}
+
 	return story, nil
+}
+
+func printStory(story Story) {
+	fmt.Print("Title: \n")
+	fmt.Println(story.Title)
+	fmt.Print("Story: \n")
+	fmt.Println(story.Story)
+	fmt.Print("Options: \n")
+	for i := 0; i < len(story.Options); i++ {
+		fmt.Print("Option text: \n")
+		fmt.Println(story.Options[i].Text)
+		fmt.Print("Option arc: \n")
+		fmt.Println(story.Options[i].Arc)
+	}
+	fmt.Print("\n\n\n\n\n\n\n\n")
 }
 
 func main() {
@@ -46,20 +61,30 @@ func main() {
 	if err_i != nil {
 		panic(err_i)
 	}
-	JsonData, err := parseJSON(JsonFile)
+	arc := "intro"
+	JsonData, err := parseJSON(JsonFile, arc)
 	if err != nil {
 		panic(err)
 	}
-	// fmt.Println(JsonData)
-	fmt.Print(("Title: \n"))
-	fmt.Println(JsonData.Story.Title)
-	fmt.Print(("Story: \n"))
-	fmt.Println(JsonData.Story.Story)
-	fmt.Print(("Options: \n"))
-	for i := 0; i < len(JsonData.Story.Options); i++ {
-		fmt.Print("Option text: \n")
-		fmt.Println(JsonData.Story.Options[i].Text)
-		fmt.Print("Option arc: \n")
-		fmt.Println(JsonData.Story.Options[i].Arc)
-	}
+	printStory(JsonData)
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "<h1>%s</h1>", JsonData.Title)
+		fmt.Fprintf(w, "<p>%s</p>", JsonData.Story)
+		for i := 0; i < len(JsonData.Options); i++ {
+			for i := 0; i < len(JsonData.Options); i++ {
+				fmt.Fprintf(w, "<a href='/choose/%d'><p>%s</p></a>", i, JsonData.Options[i].Text)
+			}
+		}
+
+		http.HandleFunc("/choose/", func(w http.ResponseWriter, r *http.Request) {
+			// optionIndex := extractOptionIndex(r.URL.Path)
+			var optionIndex int
+			optionIndex = 0
+			if optionIndex >= 0 && optionIndex < len(JsonData.Options) {
+				selectedOption := JsonData.Options[optionIndex]
+				JsonData, err = parseJSON(JsonFile, selectedOption.Arc)
+			}
+		})
+	})
+	http.ListenAndServe(":8080", nil)
 }
