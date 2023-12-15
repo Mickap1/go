@@ -1,0 +1,14 @@
+{
+    "background": {
+        "colors": [
+            {
+                "color": "#ffffff",
+                "percent": 20
+            },
+            {
+                "color": "#5e5c64",
+                "percent": 85
+            }
+        ]
+    }
+}
