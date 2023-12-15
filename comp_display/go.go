@@ -40,7 +40,7 @@ func main() {
 	app := fiber.New()
 	app.Static("/images", "./images")
 	app.Get("/", func(c *fiber.Ctx) error {
-		html := fmt.Sprintf(`<html>
+		html := `<html>
 				<head>
 					<style>
 						body {
@@ -64,7 +64,7 @@ func main() {
 					<h1>Welcome to My Webpage</h1>
 					<img src="/images/tipek.png" alt="My Image">
 				</body>
-			</html>`, config.Background.Colors[0].Color)
+			</html>`
 		return c.Type("html").SendString(html)
 	})
 
