@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>0 / 0</title>
+</head>
+<body>
+<h1>Title</h1>
+<img src="image/1.jpg" alt="Sample Image" width="300" height="200">
+<button onclick="buttonClicked('Choice1')">Choice1</button>
+<button onclick="buttonClicked('Choice2')">Choice2</button>
+<button onclick="buttonClicked('Choice3')">Choice3</button>
+<button onclick="buttonClicked('Choice4')">Choice4</button>
+<script>
+function buttonClicked(buttonNumber) {
+fetch('/handleClick', {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json',
+},
+body: JSON.stringify({ buttonNumber: buttonNumber }),
+})
+.then(response => response.json())
+.then(data => {
+alert(data.message);
+})
+.catch(error => {
+console.error('Error:', error);
+});
+</script>
+</body>
+</html>

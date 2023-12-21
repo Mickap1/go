@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>0 / 0</title>
+</head>
+<body>
+<h1>Premier homme sur la lune</h1>
+<img src="image_path" alt="Sample Image" width="300" height="200">
+<button onclick="buttonClicked('Neil Armstrong')">Neil Armstrong</button>
+<button onclick="buttonClicked('Buzz Aldrin')">Buzz Aldrin</button>
+<button onclick="buttonClicked('Yuri Gagarin')">Yuri Gagarin</button>
+<button onclick="buttonClicked('Michael Collins')">Michael Collins</button>
+<script>
+function buttonClicked(buttonNumber) {
+fetch('/handleClick', {
+method: 'POST',
+headers: {
+'Content-Type': 'application/json',
+},
+body: JSON.stringify({ buttonNumber: buttonNumber }),
+})
+.then(response => response.json())
+.then(data => {
+alert(data.message);
+})
+.catch(error => {
+console.error('Error:', error);
+});
+</script>
+</body>
+</html>
