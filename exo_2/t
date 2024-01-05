@@ -1,0 +1,41 @@
+package main
+
+import (
+	"fmt"
+	"gopkg.in/yaml.v2"
+)
+
+type URLMapping struct {
+	URLs []struct {
+		Short string `yaml:"short"`
+		Long  string `yaml:"long"`
+	} `yaml:"urls"`
+}
+
+func main() {
+	yamlData := `
+urls:
+  - short: "google"
+    long: "https://www.google.com"
+  - short: "/dogs"
+    long: "https://www.google.com/search?q=dogs"
+  - short: "/cats"
+    long: "https://www.google.com/search?q=cats"
+`
+
+	var urlMapping URLMapping
+
+	err := yaml.Unmarshal([]byte(yamlData), &urlMapping)
+	if err != nil {
+		panic(err)
+	}
+
+	urlMap := make(map[string]string)
+
+	for _, url := range urlMapping.URLs {
+		urlMap[url.Short] = url.Long
+	}
+
+	fmt.Println("Resulting map:")
+	fmt.Println(urlMap)
+}

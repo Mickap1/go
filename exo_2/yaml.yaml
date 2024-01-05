@@ -6,3 +6,5 @@ urls:
     long: "https://www.google.com/search?q=dogs"
   - short: "/cats"
     long: "https://www.google.com/search?q=cats"
+  - short: "/maxence"
+    long: "https://www.google.com/search?client=firefox-b-d&sca_esv=584824679&q=ugly+dog+picture&tbm=isch&source=lnms&sa=X&ved=2ahUKEwiZ88_-79mCAxW7bKQEHebjCIIQ0pQJegQIDBAB&biw=1920&bih=915"
