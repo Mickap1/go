@@ -1,2 +1,11 @@
 exo_1: Quiz game
 exo_2: URL Shortener
+exo_3: Choose your own adventure
+
+advent of code Day7: camelCards
+advent of code Day8: HauntedWasteland
+advent of code Day14: Parabolic Reflector Dish
+
+comp display:
+objectif: mélange entre quizgame et choose your own adventure avec un dégradé de couleur (non fait/fonctionnel)
+
